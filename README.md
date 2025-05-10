@@ -31,7 +31,7 @@ The server will start on port 8080.
 docker build -t url-shortener .
 
 # Run the container
-docker run -p 8080:8080 url-shortener
+docker run -p 8080:8080 --env-file docker.env url-shortener
 ```
 
 ## API Endpoints

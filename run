@@ -4,7 +4,6 @@ set -e
 
 export SERVICE_NAME=url-shortner
 export PORT="8080"
-export DATABASE_URL=$DATABASE_URL
 
 go test ./...
 go build -tags=jsoniter -o build/application
