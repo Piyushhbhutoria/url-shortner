@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Piyushhbhutoria/go-gin-boilerplate/controllers"
-	"github.com/Piyushhbhutoria/go-gin-boilerplate/middlewares"
+	"github.com/Piyushhbhutoria/url-shortner/controllers"
+	"github.com/Piyushhbhutoria/url-shortner/services"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -33,11 +33,19 @@ func NewRouter() *gin.Engine {
 	corsConfig.MaxAge = 1 * time.Minute
 	router.Use(cors.New(corsConfig))
 
-	router.Use(middlewares.AuthMiddleware())
-
 	health := new(controllers.HealthController)
 
 	router.GET("/health", health.Status)
+
+	// Initialize services
+	urlService := services.NewURLService()
+
+	// Initialize handlers
+	URLController := controllers.NewURLController(urlService)
+
+	router.POST("/api/shorten", URLController.HandleShortenURL)
+	router.GET("/r/:shortURL", URLController.HandleRedirect)
+	router.GET("/api/metrics/top-domains", URLController.HandleGetTopDomains)
 
 	return router
 

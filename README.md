@@ -1,51 +1,64 @@
-# Go Gin Boilerplate
+# URL Shortener Implementation
 
-> A starter project with Golang, Gin and postgresql
+This is a simple URL shortener service built with Go and Gin framework.
 
-Golang Gin boilerplate with postgresql resource. Supports multiple configuration environments.
+## Features
 
-![](header.jpg)
+- REST API to shorten URLs
+- Returns the same short URL for identical long URLs
+- Tracks domain metrics
+- Provides redirection from short URL to original URL
+- Provides a metrics API to show top 3 most shortened domains
 
-## Boilerplate structure
+## Running the Application
 
-```
-.
-├── Makefile
-├── Procfile
-├── README.md
-├── build
-├── config
-│   ├── config.go
-│   ├── dev.yaml
-│   ├── prod.yaml
-│   └── stage.yaml
-├── controllers
-│   └── health.go
-├── data
-│   └── dummy.json
-├── db
-│   └── db.go
-├── logger
-│   └── logger.go
-├── header.jpg
-├── main.go
-├── middlewares
-│   └── auth.go
-├── schema
-│   └── db.go
-├── util
-│   └── http.go
-└── server
-    ├── router.go
-    └── server.go
+### Using Go
+
+```bash
+# Install dependencies
+go mod download
+
+# Run the application
+go run main.go
 ```
 
-## Installation
+The server will start on port 8080.
 
-```sh
-make deps
+### Using Docker
+
+```bash
+# Build the Docker image
+docker build -t url-shortener .
+
+# Run the container
+docker run -p 8080:8080 url-shortener
 ```
 
-## Usage example
+## API Endpoints
 
-`curl http://localhost:3000/health`
+1. **Shorten URL**
+   - `POST /api/shorten`
+   - Request Body: `{"url": "https://example.com/long/url"}`
+   - Response: `{"short_url": "http://localhost:8080/r/AbCdEfGh"}`
+
+2. **Redirect**
+   - `GET /r/:shortURL`
+   - Redirects to the original URL
+
+3. **Top Domains Metrics**
+   - `GET /api/metrics/top-domains`
+   - Returns top 3 domains being shortened
+   - Response: `{"domains": [{"domain": "example", "count": 5}, ...]}`
+
+## Testing
+
+```bash
+go test ./...
+```
+
+## Architecture
+
+- The application uses an in-memory storage for URL mappings
+- The Gin framework handles HTTP routing
+- A service layer contains the business logic
+- Handler layer manages HTTP requests and responses

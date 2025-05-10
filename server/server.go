@@ -9,8 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Piyushhbhutoria/go-gin-boilerplate/logger"
-	"github.com/Piyushhbhutoria/go-gin-boilerplate/store"
+	"github.com/Piyushhbhutoria/url-shortner/logger"
 	"go.elastic.co/apm/module/apmhttp"
 )
 
@@ -45,9 +44,6 @@ func Init() {
 	// the request it is currently handling
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-
-	// shutdown data sources
-	store.Close()
 
 	// Shutdown server
 	logger.LogMessage("info", "Shutting down server...")
