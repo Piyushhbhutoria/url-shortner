@@ -1,0 +1,1 @@
+web: ./application -e dev
